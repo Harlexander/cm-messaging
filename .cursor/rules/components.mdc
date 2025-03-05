@@ -1,0 +1,19 @@
+---
+description: Shad-cn-components
+globs: .tsx, .ts
+---
+
+# Your rule content
+
+- Use shadcn components for any component
+- Create a utils folder for any utlity function
+- Use moment js for date and time formating
+- Keep component skinny
+- Ensure you use a confirmaion dilog before running any request from client, shad cn alert-dialog
+- use modern design
+- use the aready existing sidebar 
+- use lowercase for pages file and Pascal case  for Folders 
+
+
+- You can @ files here
+- You can use markdown but dont have to

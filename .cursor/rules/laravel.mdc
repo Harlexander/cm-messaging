@@ -1,0 +1,19 @@
+---
+description: laravel_rules
+globs: .php,.tsx
+---
+
+# Your rule content
+
+- Use Eloquent ORM and Repository patterns for data access.
+- use zustand to manage states when possible
+- use route() for passing route on the client side
+- all types should be in he index.d.ts file
+- build reusable components
+- ensure for every controller you have a route for it
+- use jobs for long unning tasks
+- use back()->with and back()->withErrors, for controllers that performan action instead of redirect()
+
+
+- You can @ files here
+- You can use markdown but dont have to

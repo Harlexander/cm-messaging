@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+    'kingschat' => [
+        'url' => env('KINGSCHAT_API_URL', 'https://connect.kingsch.at'),
+        'token' => env('KINGSCHAT_API_TOKEN'),
+    ],
+
 ];
