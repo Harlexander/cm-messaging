@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Artisan;
 use App\Models\UserList;
 use App\Models\KingschatDispatchRecipient;
 use App\Models\KcHandle;

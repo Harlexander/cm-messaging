@@ -1,0 +1,72 @@
+<?php
+
+namespace App\Jobs;
+
+use App\Mail\BroadcastMail;
+use App\Models\EmailDispatch;
+use App\Models\EmailDispatchRecipient;
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Mail;
+use Exception;
+
+class SendBroadcastEmail implements ShouldQueue
+{
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    public int $tries = 3;
+    public int $maxExceptions = 3;
+    public int $backoff = 60; // Wait 60 seconds between retries
+
+    /**
+     * Create a new job instance.
+     */
+    public function __construct(
+        protected EmailDispatch $dispatch,
+        protected EmailDispatchRecipient $recipient
+    ) {}
+
+    /**
+     * Execute the job.
+     */
+    public function handle(): void
+    {
+        // Skip if already sent or has error
+        if ($this->recipient->status !== 'pending') {
+            return;
+        }
+
+        try {
+            // Send the email
+            $mail = Mail::to($this->recipient->email)
+                ->send(new BroadcastMail($this->dispatch->message));
+
+            // Update recipient status
+            $this->recipient->update([
+                'status' => "delivered",
+                'delivered_at' => now()
+            ]);
+
+        } catch (Exception $e) {
+            // Update recipient status with error
+            $this->recipient->update([
+                'status' => 'failed',
+                'error' => $e->getMessage()
+            ]);
+
+            // If we've hit max retries, mark as permanently failed
+            if ($this->attempts() >= $this->tries) {
+                $this->recipient->update([
+                    'status' => 'failed',
+                    'error' => 'Max retries exceeded: ' . $e->getMessage()
+                ]);
+            } else {
+                // Otherwise, throw exception to trigger retry
+                throw $e;
+            }
+        }
+    }
+} 

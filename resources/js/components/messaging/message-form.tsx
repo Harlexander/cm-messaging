@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/select";
 import { Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
+import TextEditor from './text-editor';
 
 const formSchema = z.object({
     title: z.string().optional(),
@@ -200,23 +201,7 @@ export function MessageForm({ onSubmitSuccess, filters, type = 'kingschat' }: Me
                     )}
                 />
 
-                <FormField
-                    control={form.control}
-                    name="message"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Message</FormLabel>
-                            <FormControl>
-                                <Textarea
-                                    placeholder="Type your message here"
-                                    rows={5}
-                                    {...field}
-                                />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
+                <TextEditor setMessage={(message) => form.setValue('message', message)} />
 
                 <Button
                     type="submit"

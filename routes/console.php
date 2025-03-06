@@ -10,3 +10,4 @@ Artisan::command('inspire', function () {
 
 Schedule::command('kingschat:broadcast')->everyMinute();
 Schedule::command('kingschat:refresh-token')->everyFiveMinutes();
+Schedule::command('email:broadcast')->everyMinute();

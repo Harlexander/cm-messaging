@@ -35,9 +35,10 @@ interface EmailMessage {
 
 interface EmailTableProps {
     messages: EmailMessage[];
+    onRowClick?: (email: EmailMessage) => void;
 }
 
-export function EmailTable({ messages }: EmailTableProps) {
+export function EmailTable({ messages, onRowClick }: EmailTableProps) {
     const [sorting, setSorting] = useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
@@ -59,7 +60,7 @@ export function EmailTable({ messages }: EmailTableProps) {
             header: 'Message',
             cell: ({ row }) => {
                 const message = row.getValue('message') as string;
-                return <div className="max-w-[400px] truncate">{message}</div>;
+                return <div style={{ maxWidth: '300px', overflow: 'hidden', textOverflow: 'ellipsis' }} dangerouslySetInnerHTML={{ __html: message }} />;
             },
         },
         {

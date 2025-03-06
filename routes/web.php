@@ -3,6 +3,7 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KingsChatController;
 use App\Http\Controllers\MessagingController;
+use App\Http\Controllers\EmailController;
 use App\Models\KcHandle;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -17,13 +18,14 @@ Route::middleware(['auth'])->group(function () {
     // Messaging Routes
     Route::prefix('messaging')->group(function () {
         Route::get('/kingschat', [KingsChatController::class, 'kingschat'])->name('messaging.kingschat');
-        Route::get('/email', [MessagingController::class, 'email'])->name('messaging.email');
+        Route::get('/email', [EmailController::class, 'index'])->name('messaging.email');
+        Route::get('/email/{dispatch}', [EmailController::class, 'show'])->name('messaging.email.show');
         Route::get('/users', [MessagingController::class, 'users'])->name('messaging.users');
 
         
         // API Routes for sending messages
         Route::post('/kingschat/broadcast', [KingsChatController::class, 'sendKingschat'])->name('messaging.kingschat.send');
-        Route::post('/email/broadcast', [MessagingController::class, 'sendEmail'])->name('messaging.email.send');
+        Route::post('/email/broadcast', [EmailController::class, 'store'])->name('messaging.email.send');
         Route::post('/kingschat/credentials', [KingsChatController::class, 'updateCredentials'])->name('messaging.kingschat.credentials');
     });
 });
