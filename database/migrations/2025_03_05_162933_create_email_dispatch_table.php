@@ -34,12 +34,16 @@ return new class extends Migration
             $table->string('status')->default('pending');
             $table->timestamp('delivered_at')->nullable();
             $table->timestamp('opened_at')->nullable();
+            $table->timestamp('clicked_at')->nullable();
+            $table->string('clicked_link')->nullable();
             $table->text('error')->nullable();
             $table->string('unsubscribe_token', 32)->unique();
+            $table->string('message_id')->nullable()->index();
             $table->timestamps();
 
             $table->index(['status', 'delivered_at']);
             $table->index(['status', 'opened_at']);
+            $table->index(['status', 'clicked_at']);
             $table->index(['dispatch_id', 'status']);
             $table->index(['email', 'status']);
         });

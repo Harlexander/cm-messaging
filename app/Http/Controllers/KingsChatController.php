@@ -23,7 +23,7 @@ class KingsChatController extends Controller
         // Calculate analytics
         $total_delivered = KingschatDispatchRecipient::count();
         $total_read = KingschatDispatchRecipient::where('read_at', '!=', null)->count();
-        $average_read_rate = $total_read / $total_delivered * 100;
+        $average_read_rate = $total_delivered > 0 ? $total_read / $total_delivered * 100 : 0;
 
         $analytics = [
             'total_messages' => count($messages),

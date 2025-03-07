@@ -14,7 +14,7 @@ interface EmailAnalyticsProps {
 
 export function EmailAnalytics({ analytics }: EmailAnalyticsProps) {
     return (
-        <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-6 mb-6">
+        <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-5 mb-6">
             <Card className="p-4">
                 <div className="flex items-center gap-2">
                     <Mail className="h-4 w-4 text-muted-foreground" />
@@ -49,13 +49,6 @@ export function EmailAnalytics({ analytics }: EmailAnalyticsProps) {
                     <div className="text-sm font-medium">Open Rate</div>
                 </div>
                 <div className="text-2xl font-bold mt-2">{analytics.average_open_rate}%</div>
-            </Card>
-            <Card className="p-4">
-                <div className="flex items-center gap-2">
-                    <BarChart className="h-4 w-4 text-muted-foreground" />
-                    <div className="text-sm font-medium">Click Rate</div>
-                </div>
-                <div className="text-2xl font-bold mt-2">{analytics.average_click_rate}%</div>
             </Card>
         </div>
     );

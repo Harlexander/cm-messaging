@@ -20,18 +20,21 @@ class EmailController extends Controller
             ->get()
             ->map(function ($dispatch) {
                 $totalRecipients = $dispatch->recipients()->count();
-                $delivered = $dispatch->recipients()->where('status', 'delivered')->count();
-                $opened = $dispatch->recipients()->where('status', 'opened')->count();
+                $delivered = $dispatch->recipients()->whereNotNull('delivered_at')->count();
+                $opened = $dispatch->recipients()->whereNotNull('opened_at')->count();
+                $clicked = $dispatch->recipients()->whereNotNull('clicked_at')->count();
 
                 return [
                     'id' => $dispatch->id,
                     'subject' => $dispatch->subject,
                     'message' => $dispatch->message,
                     'sent_at' => $dispatch->sent_at,
+                    'created_at' => $dispatch->created_at,
                     'status' => $dispatch->status,
                     'total_recipients' => $totalRecipients,
                     'delivered_count' => $delivered,
                     'opened_count' => $opened,
+                    'clicked_count' => $clicked,
                     'open_rate' => $delivered > 0 ? round(($opened / $delivered) * 100, 2) : 0,
                 ];
             });
@@ -40,6 +43,7 @@ class EmailController extends Controller
         $totalDispatches = $dispatches->count();
         $totalDelivered = $dispatches->sum('delivered_count');
         $totalOpened = $dispatches->sum('opened_count');
+        $totalClicks = $dispatches->sum('clicked_count');
         $averageOpenRate = $totalDelivered > 0 ? round(($totalOpened / $totalDelivered) * 100, 2) : 0;
 
         // Get filter options
@@ -55,6 +59,7 @@ class EmailController extends Controller
                 'total_messages' => $totalDispatches,
                 'total_delivered' => $totalDelivered,
                 'total_opened' => $totalOpened,
+                'total_clicks' => $totalClicks,
                 'average_open_rate' => $averageOpenRate,
             ],
             'filters' => $filters,
@@ -127,8 +132,8 @@ class EmailController extends Controller
 
         $analytics = [
             'total_recipients' => $dispatch->recipients->count(),
-            'delivered' => $dispatch->recipients->where('status', 'delivered')->count(),
-            'opened' => $dispatch->recipients->where('status', 'opened')->count(),
+            'delivered' => $dispatch->recipients->whereNotNull('delivered_at')->count(),
+            'opened' => $dispatch->recipients->whereNotNull('opened_at')->count(),
             'failed' => $dispatch->recipients->where('status', 'failed')->count(),
             'pending' => $dispatch->recipients->where('status', 'pending')->count(),
         ];

@@ -103,7 +103,7 @@
         @endif
         
         <div class="content" style="white-space: pre-wrap;">
-            {!! $messageContent !!}
+            {!! $messageContent['message'] !!}
         </div>
         
         <div class="divider"></div>
@@ -115,12 +115,6 @@
                 <a href="#">Instagram</a> • 
                 <a href="#">LinkedIn</a>
             </div>
-            
-            @if(isset($metadata['unsubscribe_link']))
-                <p>
-                    If you'd like to unsubscribe, <a href="{{ $metadata['unsubscribe_link'] }}">click here</a>
-                </p>
-            @endif
             
             <p>&copy; {{ date('Y') }} Your Company Name. All rights reserved.</p>
         </div>

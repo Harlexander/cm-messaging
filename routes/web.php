@@ -4,7 +4,10 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KingsChatController;
 use App\Http\Controllers\MessagingController;
 use App\Http\Controllers\EmailController;
+use App\Http\Controllers\UsersController;
+use App\Mail\BroadcastMail;
 use App\Models\KcHandle;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -20,7 +23,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/kingschat', [KingsChatController::class, 'kingschat'])->name('messaging.kingschat');
         Route::get('/email', [EmailController::class, 'index'])->name('messaging.email');
         Route::get('/email/{dispatch}', [EmailController::class, 'show'])->name('messaging.email.show');
-        Route::get('/users', [MessagingController::class, 'users'])->name('messaging.users');
+        Route::get('/users', [UsersController::class, 'users'])->name('messaging.users');
+        Route::get('/users/search', [UsersController::class, 'search'])->name('messaging.users.search');
 
         
         // API Routes for sending messages

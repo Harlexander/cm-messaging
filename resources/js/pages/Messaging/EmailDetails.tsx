@@ -9,6 +9,7 @@ interface EmailDispatch {
     message: string;
     status: string;
     sent_at: string;
+    created_at: string;
     completed_at: string;
     filters: {
         designation: string;
@@ -45,7 +46,7 @@ export default function EmailDetails({ dispatch, analytics }: Props) {
                 <div className="mb-6">
                     <h1 className="text-2xl font-bold mb-2">{dispatch.subject}</h1>
                     <p className="text-muted-foreground">
-                        Sent {moment(dispatch.sent_at).format('MMMM D, YYYY [at] h:mm A')}
+                        Sent {moment(dispatch.created_at).format('MMMM D, YYYY [at] h:mm A')}
                     </p>
                 </div>
 

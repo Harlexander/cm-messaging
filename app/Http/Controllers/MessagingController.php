@@ -132,33 +132,6 @@ class MessagingController extends Controller
         ]);
     }
 
-    public function users()
-    {
-        $users = UserList::select([
-            'id',
-            'full_name',
-            'kingschat_handle',
-            'kc_user_id',
-            'email',
-            'designation',
-            'zone',
-            'country',
-            'created_at as joined_date'
-        ])->get();
-
-        // Get unique values for filters
-        $filters = [
-            'designations' => [],
-            'zones' => [],
-            'countries' => [],
-        ];
-
-        return Inertia::render('Messaging/Users', [
-            'users' => $users,
-            'filters' => $filters
-        ]);
-    }
-
     public function sendEmail(Request $request)
     {
         $validated = $request->validate([

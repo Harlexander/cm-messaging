@@ -19,9 +19,9 @@ class UserList extends Model
         'email',
         'designation',
         'zone',
-        'country'
+        'country',
+        'subscribed_at'
     ];
-
 
     public function getFullNameAttribute($value)
     {

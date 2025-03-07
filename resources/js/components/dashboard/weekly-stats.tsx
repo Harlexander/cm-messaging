@@ -69,7 +69,7 @@ export function WeeklyStats({ stats }: WeeklyStatsProps) {
                 <div className="flex items-center justify-between">
                     <div>
                         <p className="text-sm font-medium text-green-600 dark:text-green-300">Email Engagement</p>
-                        <h3 className="text-2xl font-bold text-green-700 dark:text-green-200">{stats.email_engagement.count}%</h3>
+                        <h3 className="text-2xl font-bold text-green-700 dark:text-green-200">{stats.email_engagement.count}</h3>
                     </div>
                     <div className="flex items-center">
                         <Mail className="h-8 w-8 text-green-500" />

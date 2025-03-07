@@ -16,13 +16,17 @@ class EmailDispatchRecipient extends Model
         'status',
         'delivered_at',
         'opened_at',
+        'clicked_at',
+        'clicked_link',
         'error',
         'unsubscribe_token',
+        'message_id',
     ];
 
     protected $casts = [
         'delivered_at' => 'datetime',
         'opened_at' => 'datetime',
+        'clicked_at' => 'datetime',
     ];
 
     // Status constants

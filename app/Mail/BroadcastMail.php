@@ -16,10 +16,9 @@ class BroadcastMail extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct(public string $messageContent)
-    {
-        //
-    }
+    public function __construct(
+        public array $messageContent
+    ) {}
 
     /**
      * Get the message envelope.
@@ -27,9 +26,10 @@ class BroadcastMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: "One Bllion Outreaches",  // Use the constructor property directly
+            subject: $this->messageContent['subject']
         );
     }
+
     /**
      * Get the message content definition.
      */

@@ -22,6 +22,8 @@ import {
     getSortedRowModel,
     useReactTable,
 } from '@tanstack/react-table';
+import moment from 'moment';
+import { Link } from '@inertiajs/react';
 
 interface EmailMessage {
     id: number;
@@ -64,7 +66,7 @@ export function EmailTable({ messages, onRowClick }: EmailTableProps) {
             },
         },
         {
-            accessorKey: 'sent_at',
+            accessorKey: 'created_at',
             header: ({ column }) => (
                 <Button
                     variant="ghost"
@@ -74,6 +76,10 @@ export function EmailTable({ messages, onRowClick }: EmailTableProps) {
                     <ArrowUpDown className="ml-2 h-4 w-4" />
                 </Button>
             ),
+            cell: ({ row }) => {
+                const createdAt = row.getValue('created_at') as string;
+                return <div>{moment(createdAt).format('MMMM D, YYYY h:mm A')}</div>;
+            },
         },
         {
             accessorKey: 'delivered_count',
@@ -97,22 +103,11 @@ export function EmailTable({ messages, onRowClick }: EmailTableProps) {
             },
         },
         {
-            accessorKey: 'click_count',
-            header: 'Clicks',
-            cell: ({ row }) => {
-                const opened = row.getValue('opened_count') as number;
-                const clicks = row.getValue('click_count') as number;
-                const clickRate = opened > 0 ? (clicks / opened) * 100 : 0;
-                return (
-                    <div className="flex flex-col">
-                        <span>{clicks}</span>
-                        <span className="text-xs text-muted-foreground">
-                            ({clickRate.toFixed(1)}%)
-                        </span>
-                    </div>
-                );
-            },
-        },
+            id: "actions",
+            cell: ({row}) => (
+                <Link href={`/messaging/email/${row.original.id}`}><Button>View</Button></Link>
+            )
+        }
     ];
 
     const table = useReactTable({

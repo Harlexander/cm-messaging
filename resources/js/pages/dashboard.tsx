@@ -66,7 +66,9 @@ interface Props {
 }
 
 export default function Dashboard({ analytics, weeklyStats, recentEmails, recentClicks }: Props) {
-    return (
+    console.log({weeklyStats, recentClicks, recentEmails});
+
+    return (        
         <AppSidebarLayout>
             <div className="p-6">
                 <h1 className="text-2xl font-bold mb-6">Messaging Dashboard</h1>
@@ -126,7 +128,7 @@ export default function Dashboard({ analytics, weeklyStats, recentEmails, recent
                 </div>
 
                 <WeeklyStats stats={weeklyStats} />
-                <RecentActivity recentEmails={[]} recentClicks={recentClicks} />
+                <RecentActivity recentEmails={recentEmails} recentClicks={recentClicks} />
             </div>
         </AppSidebarLayout>
     );

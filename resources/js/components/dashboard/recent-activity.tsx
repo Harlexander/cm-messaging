@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
     Table,
@@ -9,22 +8,13 @@ import {
     TableRow,
 } from '@/components/ui/table';
 import { Mail, MousePointerClick } from 'lucide-react';
-import { EmailAnalytics } from './email-analytics';
 
-interface RecentEmail {
+export interface RecentEmail {
     id: number;
     subject: string;
     sent_at: string;
     opens: number;
     clicks: number;
-    delivered: number;
-    bounced: number;
-    spam: number;
-    click_rate: number;
-    open_rate: number;
-    engagement_time: string;
-    top_locations: Array<{ location: string; count: number }>;
-    click_map: Array<{ link: string; clicks: number }>;
 }
 
 interface RecentClick {
@@ -41,8 +31,6 @@ interface RecentActivityProps {
 }
 
 export function RecentActivity({ recentEmails, recentClicks }: RecentActivityProps) {
-    const [selectedEmail, setSelectedEmail] = useState<RecentEmail | null>(null);
-
     return (
         <>
             <div className="grid gap-4 md:grid-cols-2">
@@ -66,7 +54,6 @@ export function RecentActivity({ recentEmails, recentClicks }: RecentActivityPro
                                     <TableRow 
                                         key={email.id}
                                         className="cursor-pointer hover:bg-muted/50"
-                                        onClick={() => setSelectedEmail(email)}
                                     >
                                         <TableCell className="font-medium max-w-[200px] truncate">
                                             {email.subject}
@@ -112,14 +99,6 @@ export function RecentActivity({ recentEmails, recentClicks }: RecentActivityPro
                     </CardContent>
                 </Card>
             </div>
-
-            {selectedEmail && (
-                <EmailAnalytics
-                    email={selectedEmail}
-                    open={!!selectedEmail}
-                    onOpenChange={(open) => !open && setSelectedEmail(null)}
-                />
-            )}
         </>
     );
 } 

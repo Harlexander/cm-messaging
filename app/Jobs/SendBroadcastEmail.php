@@ -41,13 +41,25 @@ class SendBroadcastEmail implements ShouldQueue
 
         try {
             // Send the email
-            $mail = Mail::to($this->recipient->email)
-                ->send(new BroadcastMail($this->dispatch->message));
+            Mail::to($this->recipient->email)
+                ->send(new BroadcastMail(
+                    [
+                        'subject' => $this->dispatch->subject,
+                        'message' => $this->dispatch->message,
+                    ]
+                ));
+
+            // Get the message ID from Brevo's response
+            $messageId = null;
+            if (config('mail.default') === 'brevo') {
+                $messageId = session('brevo_message_id');
+            }
 
             // Update recipient status
             $this->recipient->update([
-                'status' => "delivered",
-                'delivered_at' => now()
+                'status' => 'delivered',
+                'delivered_at' => now(),
+                'message_id' => $messageId
             ]);
 
         } catch (Exception $e) {
