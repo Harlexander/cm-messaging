@@ -110,6 +110,15 @@ class SendKingsChatBroadcast extends Command
                 ->get()
                 ->each(function ($user) use ($dispatch, $bar) {
                     // Create recipient record
+                    $check = KingschatDispatchRecipient::where('kc_user_id', $user->kc_user_id)
+                        ->where('dispatch_id', $dispatch->id)
+                        ->first();
+
+                    if($check) {
+                        $this->info("Recipient already exists: {$user->kc_user_id}");
+                        return;
+                    }
+                        
                     $recipient = KingschatDispatchRecipient::create([
                         'dispatch_id' => $dispatch->id,
                         'kc_user_id' => $user->kc_user_id,

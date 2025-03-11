@@ -207,7 +207,10 @@ export function MessageForm({ onSubmitSuccess, filters, type = 'kingschat' }: Me
                     )}
                 />
 
-                <TextEditor setMessage={(message) => form.setValue('message', message)} />
+                <Textarea
+                    placeholder="Enter message"
+                    {...form.register('message')}
+                />
 
                 <Button
                     type="submit"
