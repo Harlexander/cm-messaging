@@ -119,9 +119,11 @@ export function MessageForm({ onSubmitSuccess, filters, type = 'kingschat' }: Me
                                     <SelectContent>
                                         <SelectItem value="all">All</SelectItem>
                                         {filters.designations.map((designation) => (
-                                            <SelectItem key={designation} value={designation}>
-                                                {designation}
-                                            </SelectItem>
+                                            designation && (
+                                                <SelectItem key={designation} value={designation}>
+                                                    {designation}
+                                                </SelectItem>
+                                            )
                                         ))}
                                     </SelectContent>
                                 </Select>
@@ -146,9 +148,11 @@ export function MessageForm({ onSubmitSuccess, filters, type = 'kingschat' }: Me
                                     <SelectContent>
                                         <SelectItem value="all">All</SelectItem>
                                         {filters.zones.map((zone) => (
-                                            <SelectItem key={zone} value={zone}>
-                                                {zone}
-                                            </SelectItem>
+                                            zone && (
+                                                <SelectItem key={zone} value={zone}>
+                                                    {zone}
+                                                </SelectItem>
+                                            )
                                         ))}
                                     </SelectContent>
                                 </Select>
@@ -173,9 +177,11 @@ export function MessageForm({ onSubmitSuccess, filters, type = 'kingschat' }: Me
                                     <SelectContent>
                                         <SelectItem value="all">All</SelectItem>
                                         {filters.countries.map((country) => (
-                                            <SelectItem key={country} value={country}>
-                                                {country}
-                                            </SelectItem>
+                                            country && (
+                                                <SelectItem key={country} value={country}>
+                                                    {country}
+                                                </SelectItem>
+                                            )
                                         ))}
                                     </SelectContent>
                                 </Select>

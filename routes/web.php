@@ -6,6 +6,7 @@ use App\Http\Controllers\MessagingController;
 use App\Http\Controllers\EmailController;
 use App\Http\Controllers\UsersController;
 use App\Mail\BroadcastMail;
+use App\Models\EmailDispatchRecipient;
 use App\Models\KcHandle;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
@@ -32,6 +33,36 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/email/broadcast', [EmailController::class, 'store'])->name('messaging.email.send');
         Route::post('/kingschat/credentials', [KingsChatController::class, 'updateCredentials'])->name('messaging.kingschat.credentials');
     });
+});
+
+Route::get('/test', function () {
+    return new BroadcastMail([
+        'subject' => 'Test Subject',
+        'message' => '1 DAY TO GO📢📢
+            NO ONE FORGOTTEN LIVE!!
+            - COMPLETING THE FULL PREACHING OF THE GOSPEL IN THE PRISONS
+
+            🗓️ TUESDAY, MARCH, 11TH
+            🕙 10AM GMT+1
+
+            REGISTRATION LINK: https://www.kingsforms.online/prison-ministry-conference
+
+            PARTICIPATION LINK-
+            www.nooneforgotten.org',
+        'name' => 'Test Name',
+        'bannerImage' => 'https://cdn1.kingschat.online/uploads/media/5cb67c0e6eb1170001f207fd/S2M2OE9CWTkxVFRnTnZDT0lPS2ZSQT09/No_One_Forgotten_live.jpg'
+    ]);
+});
+
+Route::get('/test2', function () {
+    $record = EmailDispatchRecipient::create([
+        'dispatch_id' => 1,
+        'email' => 'test@test.com',
+        'status' => 'pending',
+        'unsubscribe_token' => "rueuruyyhuee",
+    ]);
+
+    return $record;
 });
 
 require __DIR__.'/settings.php';

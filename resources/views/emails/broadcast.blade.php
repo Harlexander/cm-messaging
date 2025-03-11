@@ -6,87 +6,114 @@
     <title>Email Notification</title>
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             line-height: 1.6;
-            color: #333;
+            color: #1a1a1a;
             max-width: 600px;
             margin: 0 auto;
             padding: 20px;
-            background-color: #f8f9fa;
+            background-color: #f4f4f5;
         }
         .container {
-            background: #fff;
+            background: #ffffff;
             padding: 0;
-            border-radius: 12px;
+            border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         }
         .header {
+            padding: 32px;
+            background: #ffffff;
+            border-bottom: 1px solid #e5e7eb;
             text-align: center;
-            padding: 24px;
-            background: linear-gradient(135deg, #f5f7fa 0%, #e4eaef 100%);
         }
         .logo {
-            max-width: 140px;
+            max-width: 120px;
             height: auto;
+            display: inline-block;
         }
         .banner {
             width: 100%;
-            max-height: 200px;
-            object-fit: cover;
+            height: auto;
             display: block;
         }
         .banner-container {
-            position: relative;
-            background-color: #f0f4f8;
-            text-align: center;
+            background-color: #f8fafc;
+            max-height: none;
+            line-height: 0;
         }
         .content {
-            text-align: center;
-            padding: 30px;
-            color: #444;
+            padding: 32px;
+            color: #374151;
+        }
+        .greeting {
+            font-size: 16px;
+            color: black;
+            margin-bottom: 16px;
+        }
+        .message {
+            font-size: 15px;
+            line-height: 1.7;
+            color: #1f2937;
+            white-space: pre-line;
+            text-align: left;
+            margin: 0;
+            padding: 0;
+        }
+        .message p {
+            margin: 0 0 16px 0;
+        }
+        .message p:last-child {
+            margin-bottom: 0;
         }
         .footer {
-            background-color: #f8f9fa;
-            padding: 20px;
-            font-size: 12px;
-            color: #777;
-            text-align: center;
-        }
-        .divider {
-            height: 1px;
-            background: #eee;
-            margin: 0;
-        }
-        a {
-            color: #3490dc;
-            text-decoration: none;
-            font-weight: 500;
-        }
-        a:hover {
-            text-decoration: underline;
+            background-color: #f8fafc;
+            padding: 24px 32px;
+            font-size: 13px;
+            color: #6b7280;
+            border-top: 1px solid #e5e7eb;
         }
         .social-links {
-            margin: 15px 0;
+            margin: 16px 0;
         }
         .social-links a {
-            display: inline-block;
-            margin: 0 8px;
-            color: #666;
+            color: #4b5563;
+            text-decoration: none;
+            margin-right: 16px;
+            font-weight: 500;
+        }
+        .social-links a:hover {
+            color: #2563eb;
         }
         .btn {
             display: inline-block;
-            background-color: #3490dc;
+            background-color: #2563eb;
             color: white;
-            padding: 10px 20px;
-            border-radius: 4px;
-            margin-top: 10px;
-            font-weight: bold;
+            padding: 12px 24px;
+            border-radius: 6px;
+            margin-top: 24px;
+            font-weight: 500;
             text-decoration: none;
+            font-size: 14px;
         }
         .btn:hover {
-            background-color: #2779bd;
-            text-decoration: none;
+            background-color: #1d4ed8;
+        }
+        .copyright {
+            margin-top: 16px;
+            font-size: 12px;
+            color: #9ca3af;
+        }
+        @media (max-width: 600px) {
+            body {
+                padding: 12px;
+            }
+            .container {
+                border-radius: 12px;
+            }
+            .header, .content, .footer {
+                padding: 24px;
+            }
         }
     </style>
 </head>
@@ -95,28 +122,33 @@
         <div class="header">
             <img src="https://cellministry.tv/pfcc/assets/logo.png" alt="Company Logo" class="logo">
         </div>
-        
-        @if(isset($bannerImage))
+
+        <div class="content">
+            <div class="greeting">
+                Dear {{ $messageContent['name'] }},
+            </div>
+            
+            <div class="message">
+                {!! $messageContent['message'] !!}
+            </div>
+        </div>
+                @if(isset($messageContent['bannerImage']))
             <div class="banner-container">
-                <img src="{{ $bannerImage }}" alt="Banner" class="banner">
+                <img src="{{ $messageContent['bannerImage'] }}" alt="Banner" class="banner">
             </div>
         @endif
         
-        <div class="content" style="white-space: pre-wrap;">
-            {!! $messageContent['message'] !!}
-        </div>
-        
-        <div class="divider"></div>
-        
         <div class="footer">
-            <div class="social-links">
-                <a href="#">Facebook</a> • 
-                <a href="#">Twitter</a> • 
-                <a href="#">Instagram</a> • 
-                <a href="#">LinkedIn</a>
-            </div>
+            <!-- <div class="social-links">
+                <a href="https://www.facebook.com/share/19rVXhK1Zu/">Facebook</a>
+                <a href="https://x.com/cellseverywhere?t=mcwZw3-RhChyDuim-3OIug&s=09">X</a>
+                <a href="https://www.instagram.com/p/DGzxv1KNfcY/?igsh=em9iOHg5b2xkcWk=">Instagram</a>
+                <a href="https://vm.tiktok.com/ZMBe751SN/">TikTok</a>
+            </div> -->
             
-            <p>&copy; {{ date('Y') }} Your Company Name. All rights reserved.</p>
+            <div class="copyright">
+                &copy; {{ date('Y') }} Love World Cell Ministry. All rights reserved.
+            </div>
         </div>
     </div>
 </body>

@@ -17,7 +17,6 @@ class BrevoWebhookController extends Controller
             $timestamp = now();
             $link = $request->input('link');
 
-            error_log("omo");
             error_log($email);
 
             // Find the recipient by message ID

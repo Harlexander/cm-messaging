@@ -127,9 +127,11 @@ export default function Users({ users: initialUsers, filters }: Props) {
                             <SelectContent>
                                 <SelectItem value="all">All Designations</SelectItem>
                                 {filters.designations.map((designation) => (
-                                    <SelectItem key={designation} value={designation}>
-                                        {designation}
-                                    </SelectItem>
+                                    designation && (
+                                        <SelectItem key={designation} value={designation}>
+                                            {designation}
+                                        </SelectItem>
+                                    )
                                 ))}
                             </SelectContent>
                         </Select>
@@ -144,9 +146,11 @@ export default function Users({ users: initialUsers, filters }: Props) {
                             <SelectContent>
                                 <SelectItem value="all">All Zones</SelectItem>
                                 {filters.zones.map((zone) => (
-                                    <SelectItem key={zone} value={zone}>
-                                        {zone}
-                                    </SelectItem>
+                                    zone && (
+                                        <SelectItem key={zone} value={zone}>
+                                            {zone}
+                                        </SelectItem>
+                                    )
                                 ))}
                             </SelectContent>
                         </Select>
@@ -161,9 +165,11 @@ export default function Users({ users: initialUsers, filters }: Props) {
                             <SelectContent>
                                 <SelectItem value="all">All Countries</SelectItem>
                                 {filters.countries.map((country) => (
-                                    <SelectItem key={country} value={country}>
-                                        {country}
-                                    </SelectItem>
+                                    country && (
+                                        <SelectItem key={country} value={country}>
+                                            {country}
+                                        </SelectItem>
+                                    )
                                 ))}
                             </SelectContent>
                         </Select>

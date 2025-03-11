@@ -56,6 +56,7 @@ class SendEmailBroadcast extends Command
             // Get filtered users who haven't been queued for this email yet
             $query = UserList::query()
                 ->whereNotNull('email')
+                ->distinct('email')
                 ->whereNotExists(function ($query) use ($dispatch) {
                     $query->select(DB::raw(1))
                         ->from('email_dispatch_recipients')
@@ -90,7 +91,7 @@ class SendEmailBroadcast extends Command
             }
 
             // Calculate how many more we can queue
-            $batchSize = min(100 - $queuedCount, $remainingUsers);
+            $batchSize = min(300 - $queuedCount, $remainingUsers);
             
             $this->info("Total remaining recipients: {$remainingUsers}");
             $this->info("Currently in queue: {$queuedCount}");
@@ -105,18 +106,25 @@ class SendEmailBroadcast extends Command
                 ->get()
                 ->each(function ($user) use ($dispatch, $bar) {
                     // Create recipient record with unsubscribe token
+
+                    $check = EmailDispatchRecipient::where('email', $user->email)->where('dispatch_id', $dispatch->id)->first();
+                    if($check) {
+                        $this->info("Recipient already exists: {$user->email}");
+                        return;
+                    }
+
                     $recipient = EmailDispatchRecipient::create([
                         'dispatch_id' => $dispatch->id,
                         'email' => $user->email,
                         'status' => 'pending',
                         'unsubscribe_token' => Str::random(32),
                     ]);
-
+                    
                     // Queue the email
-                    SendBroadcastEmail::dispatch($dispatch, $recipient)
+                    SendBroadcastEmail::dispatch($dispatch, $recipient, $user->full_name)
                         ->onQueue('emails');
 
-                    $bar->advance();
+                    // $bar->advance();
                 });
 
             $bar->finish();

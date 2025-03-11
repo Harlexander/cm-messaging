@@ -26,7 +26,8 @@ class SendBroadcastEmail implements ShouldQueue
      */
     public function __construct(
         protected EmailDispatch $dispatch,
-        protected EmailDispatchRecipient $recipient
+        protected EmailDispatchRecipient $recipient,
+        protected string $name
     ) {}
 
     /**
@@ -46,6 +47,8 @@ class SendBroadcastEmail implements ShouldQueue
                     [
                         'subject' => $this->dispatch->subject,
                         'message' => $this->dispatch->message,
+                        'name' => $this->name
+                        // 'bannerImage' => "https://cdn1.kingschat.online/uploads/media/5cb67c0e6eb1170001f207fd/S2M2OE9CWTkxVFRnTnZDT0lPS2ZSQT09/No_One_Forgotten_live.jpg"
                     ]
                 ));
 
