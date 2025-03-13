@@ -107,7 +107,7 @@ export default function Users({ users: initialUsers, filters }: Props) {
     return (
         <AppSidebarLayout>
             <div className="p-6">
-                <h1 className="text-2xl font-bold mb-6">Users</h1>
+                <h1 className="text-2xl font-bold mb-6">Users ({users.total})</h1>
 
                 <div className="flex flex-col gap-4 md:flex-row md:items-center mb-6">
                     <Input

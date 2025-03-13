@@ -50,7 +50,8 @@ class UsersController extends Controller
                 'zone',
                 'country',
                 'created_at as joined_date'
-            ]);
+            ])
+            ->distinct('email');
 
         // Apply search filters
         if ($search = $request->input('search')) {
@@ -77,8 +78,7 @@ class UsersController extends Controller
         // Apply sorting
         $sortField = $request->input('sort_field', 'full_name');
         $sortDirection = $request->input('sort_direction', 'asc');
-        $query->orderBy($sortField, $sortDirection)
-        ->distinct('email');
+        $query->orderBy($sortField, $sortDirection);
 
         return $query;
     }

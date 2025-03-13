@@ -20,6 +20,7 @@ class RegisteredUserController extends Controller
      */
     public function create(): Response
     {
+
         return Inertia::render('auth/register');
     }
 
@@ -36,6 +37,9 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
+
+        return redirect()->route("login");
+        
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
