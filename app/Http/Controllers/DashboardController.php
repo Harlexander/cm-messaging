@@ -36,7 +36,7 @@ class DashboardController extends Controller
         $recentEmails = $this->getRecentEmails();
         $recentClicks = $this->getRecentClicks();
 
-        return Inertia::render('Dashboard', [
+        return Inertia::render('dashboard', [
             'analytics' => [
                 'emails' => $emailStats,
                 'kingschat' => $kingschatStats,

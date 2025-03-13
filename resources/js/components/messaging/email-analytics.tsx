@@ -34,21 +34,21 @@ export function EmailAnalytics({ analytics }: EmailAnalyticsProps) {
                     <Mail className="h-4 w-4 text-muted-foreground" />
                     <div className="text-sm font-medium">Opened</div>
                 </div>
-                <div className="text-2xl font-bold mt-2">416</div>
+                <div className="text-2xl font-bold mt-2">{analytics.total_opened}</div>
             </Card>
             <Card className="p-4">
                 <div className="flex items-center gap-2">
                     <MousePointerClick className="h-4 w-4 text-muted-foreground" />
                     <div className="text-sm font-medium">Clicks</div>
                 </div>
-                <div className="text-2xl font-bold mt-2">160</div>
+                <div className="text-2xl font-bold mt-2">{analytics.total_clicks}</div>
             </Card>
             <Card className="p-4">
                 <div className="flex items-center gap-2">
                     <BarChart className="h-4 w-4 text-muted-foreground" />
                     <div className="text-sm font-medium">Open Rate</div>
                 </div>
-                <div className="text-2xl font-bold mt-2">9%</div>
+                <div className="text-2xl font-bold mt-2">{analytics.average_open_rate}%</div>
             </Card>
         </div>
     );

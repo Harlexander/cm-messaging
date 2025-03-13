@@ -96,7 +96,7 @@ export default function Users({ users: initialUsers, filters }: Props) {
     const handleFilterChange = (field: string, value: string) => {
         setSelectedFilters(prev => ({
             ...prev,
-            [field]: value
+            [field]: value === 'all' ? '' : value
         }));
     };
 
