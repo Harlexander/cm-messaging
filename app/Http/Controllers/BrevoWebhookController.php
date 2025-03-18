@@ -43,6 +43,16 @@ class BrevoWebhookController extends Controller
                     ]);
                     break;
 
+
+                case 'unique_opened':
+                    if ($recipient->status === 'delivered') {
+                        $recipient->update([
+                            'status' => 'opened',
+                            'opened_at' => $timestamp
+                        ]);
+                    }
+                    break;
+
                 case 'opened':
                     if ($recipient->status === 'delivered') {
                         $recipient->update([
