@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/select";
 import { Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
-import TextEditor from './text-editor';
+import TextEditor, { TextEditor2 } from './text-editor';
 
 const formSchema = z.object({
     title: z.string().optional(),
@@ -210,7 +210,7 @@ export function MessageForm({ onSubmitSuccess, filters, type = 'kingschat' }: Me
                 
                 {
                     type == 'email' ? (
-                        <TextEditor setMessage={(message) => form.setValue('message', message)} />
+                        <TextEditor2 setMessage={(message) => form.setValue('message', message)} />
                     ) : (
                         <Textarea
                             placeholder="Enter message"
