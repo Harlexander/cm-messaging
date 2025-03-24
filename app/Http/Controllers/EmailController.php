@@ -15,29 +15,38 @@ class EmailController extends Controller
 {
     public function index()
     {
-        // Get email dispatches with analytics
-        $dispatches = EmailDispatch::with('recipients')
-            ->get()
-            ->map(function ($dispatch) {
-                $totalRecipients = $dispatch->recipients()->count();
-                $delivered = $dispatch->recipients()->whereNotNull('delivered_at')->count();
-                $opened = $dispatch->recipients()->whereNotNull('opened_at')->count();
-                $clicked = $dispatch->recipients()->whereNotNull('clicked_at')->count();
-
-                return [
-                    'id' => $dispatch->id,
-                    'subject' => $dispatch->subject,
-                    'message' => $dispatch->message,
-                    'sent_at' => $dispatch->sent_at,
-                    'created_at' => $dispatch->created_at,
-                    'status' => $dispatch->status,
-                    'total_recipients' => $totalRecipients,
-                    'delivered_count' => $delivered,
-                    'opened_count' => $opened,
-                    'clicked_count' => $clicked,
-                    'open_rate' => $delivered > 0 ? round(($opened / $delivered) * 100, 2) : 0,
-                ];
-            });
+        // Get email dispatches with analytics using efficient counting
+        $dispatches = EmailDispatch::withCount([
+            'recipients',
+            'recipients as delivered_count' => function ($query) {
+                $query->whereNotNull('delivered_at');
+            },
+            'recipients as opened_count' => function ($query) {
+                $query->whereNotNull('opened_at');
+            },
+            'recipients as clicked_count' => function ($query) {
+                $query->whereNotNull('clicked_at');
+            }
+        ])
+        ->orderBy('created_at', 'desc')
+        ->get()
+        ->map(function ($dispatch) {
+            return [
+                'id' => $dispatch->id,
+                'subject' => $dispatch->subject,
+                'message' => $dispatch->message,
+                'sent_at' => $dispatch->sent_at,
+                'created_at' => $dispatch->created_at,
+                'status' => $dispatch->status,
+                'total_recipients' => $dispatch->recipients_count,
+                'delivered_count' => $dispatch->delivered_count,
+                'opened_count' => $dispatch->opened_count,
+                'clicked_count' => $dispatch->clicked_count,
+                'open_rate' => $dispatch->delivered_count > 0 
+                    ? round(($dispatch->opened_count / $dispatch->delivered_count) * 100, 2) 
+                    : 0,
+            ];
+        });
 
         // Calculate analytics
         $totalDispatches = $dispatches->count();
