@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 
 class EmailController extends Controller
 {
@@ -96,7 +97,8 @@ class EmailController extends Controller
             if ($request->hasFile('attachment')) {
                 $file = $request->file('attachment');
                 $attachmentName = $file->getClientOriginalName();
-                $attachmentPath = $file->store('email-attachments', 'public');
+                $storedPath = $file->store('email-attachments', 'public');
+                $attachmentPath = asset(Storage::url($storedPath)); // Store the full public URL
             }
 
             // Create the dispatch record
@@ -109,7 +111,7 @@ class EmailController extends Controller
                     'country' => $validated['country'],
                 ],
                 'status' => 'pending',
-                'attachment_path' => $attachmentPath ? storage_path('app/public/' . $attachmentPath) : null,
+                'attachment_path' => $attachmentPath,
                 'attachment_name' => $attachmentName,
             ]);
 
@@ -191,7 +193,8 @@ class EmailController extends Controller
             if ($request->hasFile('attachment')) {
                 $file = $request->file('attachment');
                 $attachmentName = $file->getClientOriginalName();
-                $attachmentPath = $file->store('email-attachments', 'public');
+                $storedPath = $file->store('email-attachments', 'public');
+                $attachmentPath = asset('storage/' . $storedPath); // Store the full public URL
             }
 
             // Send test email
@@ -202,7 +205,7 @@ class EmailController extends Controller
                         'message' => $validated['message'],
                         'name' => 'Test User'
                     ],
-                    $attachmentPath ? storage_path('app/public/' . $attachmentPath) : null,
+                    $attachmentPath,
                     $attachmentName
                 ));
 

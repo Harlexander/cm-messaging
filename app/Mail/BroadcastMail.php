@@ -9,6 +9,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Mail\Mailables\Attachment;
+use Illuminate\Support\Facades\Log;
 
 class BroadcastMail extends Mailable
 {
@@ -51,10 +52,22 @@ class BroadcastMail extends Mailable
     public function attachments(): array
     {
         if ($this->attachmentPath && $this->attachmentName) {
+            // Convert public URL to storage path
+            $path = str_replace(asset('storage/'), '', $this->attachmentPath);
+            $fullPath = storage_path('app/public/' . $path);
+
+            if (!file_exists($fullPath)) {
+                Log::error('Attachment file not found', [
+                    'path' => $fullPath,
+                    'url' => $this->attachmentPath
+                ]);
+                return [];
+            }
+
             return [
-                Attachment::fromPath($this->attachmentPath)
+                Attachment::fromPath($fullPath)
                     ->as($this->attachmentName)
-                    ->withMime(mime_content_type($this->attachmentPath))
+                    ->withMime(mime_content_type($fullPath))
             ];
         }
 
