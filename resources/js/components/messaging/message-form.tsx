@@ -32,7 +32,7 @@ const formSchema = z.object({
     zone: z.string().default("all"),
     country: z.string().default("all"),
     attachment: z.any().optional(),
-    test_email: z.string().email().optional(),
+    test_email: z.string().optional(),
 }).refine(data => {
     // Ensure either title (for KingsChat) or subject (for email) is provided
     return data.title || data.subject;
