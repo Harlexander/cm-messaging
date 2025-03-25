@@ -31,6 +31,8 @@ const formSchema = z.object({
     designation: z.string().default("all"),
     zone: z.string().default("all"),
     country: z.string().default("all"),
+    attachment: z.any().optional(),
+    test_email: z.string().email().optional(),
 }).refine(data => {
     // Ensure either title (for KingsChat) or subject (for email) is provided
     return data.title || data.subject;
@@ -61,10 +63,14 @@ export function MessageForm({ onSubmitSuccess, filters, type = 'kingschat' }: Me
             designation: 'all',
             zone: 'all',
             country: 'all',
+            attachment: undefined,
+            test_email: '',
         },
     });
 
     const onSubmit = (data: FormValues) => {
+        if(!confirm('Are you sure you want to send this message?')) return;
+
         const endpoint = type === 'email' 
             ? '/messaging/email/broadcast' 
             : '/messaging/kingschat/broadcast';
@@ -75,7 +81,8 @@ export function MessageForm({ onSubmitSuccess, filters, type = 'kingschat' }: Me
                 message: data.message, 
                 designation: data.designation, 
                 zone: data.zone, 
-                country: data.country 
+                country: data.country,
+                attachment: data.attachment,
             }
             : { 
                 title: data.title, 
@@ -93,6 +100,29 @@ export function MessageForm({ onSubmitSuccess, filters, type = 'kingschat' }: Me
             },
             onError: () => {
                 toast.error('Failed to send message');
+            }
+        });
+    };
+
+    const sendTestEmail = () => {
+        const testEmail = form.getValues('test_email');
+        if (!testEmail) {
+            toast.error('Please enter a test email address');
+            return;
+        }
+
+        const data = form.getValues();
+        router.post(route('email.test'), {
+            email: testEmail,
+            subject: data.subject,
+            message: data.message,
+            attachment: data.attachment,
+        }, {
+            onSuccess: () => {
+                toast.success('Test email sent successfully!');
+            },
+            onError: () => {
+                toast.error('Failed to send test email');
             }
         });
     };
@@ -206,6 +236,7 @@ export function MessageForm({ onSubmitSuccess, filters, type = 'kingschat' }: Me
                         </FormItem>
                     )}
                 />
+                
 
                 
                 {
@@ -219,6 +250,66 @@ export function MessageForm({ onSubmitSuccess, filters, type = 'kingschat' }: Me
                     )
                 }
 
+                {type === 'email' && (
+                    <>
+                        <div className="space-y-4">
+                            <FormField
+                                control={form.control}
+                                name="test_email"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Test Email Address</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                type="email"
+                                                placeholder="Enter email for testing"
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
+
+                        <FormField
+                            control={form.control}
+                            name="attachment"
+                            render={({ field: { value, onChange, ...field } }) => (
+                                <FormItem>
+                                    <FormLabel>Attachment</FormLabel>
+                                    <FormControl>
+                                        <Input 
+                                            type="file"
+                                            onChange={(e) => {
+                                                const file = e.target.files?.[0];
+                                                if (file) {
+                                                    onChange(file);
+                                                }
+                                            }}
+                                            {...field}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </>
+                )}
+
+                <div className='flex gap-4'>
+                {
+                    type === 'email' && (
+                        <Button
+                            type="button"
+                            variant="secondary"
+                            className="w-full"
+                            onClick={sendTestEmail}
+                        >
+                            Send Test Email
+                        </Button>
+                    )
+                }
                 <Button
                     type="submit"
                     className="w-full"
@@ -233,6 +324,7 @@ export function MessageForm({ onSubmitSuccess, filters, type = 'kingschat' }: Me
                         'Send Broadcast'
                     )}
                 </Button>
+                </div>
             </form>
         </Form>
     );

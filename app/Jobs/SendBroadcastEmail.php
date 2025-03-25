@@ -49,7 +49,9 @@ class SendBroadcastEmail implements ShouldQueue
                         'message' => $this->dispatch->message,
                         'name' => $this->name
                         // 'bannerImage' => "https://cdn1.kingschat.online/uploads/media/5cb67c0e6eb1170001f207fd/S2M2OE9CWTkxVFRnTnZDT0lPS2ZSQT09/No_One_Forgotten_live.jpg"
-                    ]
+                    ],
+                    $this->dispatch->attachment_path,
+                    $this->dispatch->attachment_name
                 ));
 
             // Get the message ID from Brevo's response

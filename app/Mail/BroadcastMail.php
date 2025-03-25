@@ -8,6 +8,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Mail\Mailables\Attachment;
 
 class BroadcastMail extends Mailable
 {
@@ -17,7 +18,9 @@ class BroadcastMail extends Mailable
      * Create a new message instance.
      */
     public function __construct(
-        public array $messageContent
+        public array $messageContent,
+        public ?string $attachmentPath = null,
+        public ?string $attachmentName = null
     ) {}
 
     /**
@@ -47,6 +50,14 @@ class BroadcastMail extends Mailable
      */
     public function attachments(): array
     {
+        if ($this->attachmentPath && $this->attachmentName) {
+            return [
+                Attachment::fromPath($this->attachmentPath)
+                    ->as($this->attachmentName)
+                    ->withMime(mime_content_type($this->attachmentPath))
+            ];
+        }
+
         return [];
     }
 }

@@ -32,6 +32,9 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/kingschat/broadcast', [KingsChatController::class, 'sendKingschat'])->name('messaging.kingschat.send');
         Route::post('/email/broadcast', [EmailController::class, 'store'])->name('messaging.email.send');
         Route::post('/kingschat/credentials', [KingsChatController::class, 'updateCredentials'])->name('messaging.kingschat.credentials');
+
+        Route::post('/messaging/email/test', [EmailController::class, 'test'])
+            ->name('email.test');
     });
 });
 

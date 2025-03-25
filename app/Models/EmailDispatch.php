@@ -19,6 +19,8 @@ class EmailDispatch extends Model
         'sent_at',
         'completed_at',
         'error_log',
+        'attachment_path',
+        'attachment_name',
     ];
 
     protected $casts = [

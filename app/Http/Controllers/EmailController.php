@@ -8,8 +8,8 @@ use App\Models\UserList;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Mail;
 
 class EmailController extends Controller
 {
@@ -83,10 +83,21 @@ class EmailController extends Controller
             'designation' => 'required|string',
             'zone' => 'required|string',
             'country' => 'required|string',
+            'attachment' => 'nullable|file|max:10240', // Max 10MB
         ]);
 
         try {
             DB::beginTransaction();
+
+            // Handle file upload if present
+            $attachmentPath = null;
+            $attachmentName = null;
+            
+            if ($request->hasFile('attachment')) {
+                $file = $request->file('attachment');
+                $attachmentName = $file->getClientOriginalName();
+                $attachmentPath = $file->store('email-attachments', 'public');
+            }
 
             // Create the dispatch record
             $dispatch = EmailDispatch::create([
@@ -98,6 +109,8 @@ class EmailController extends Controller
                     'country' => $validated['country'],
                 ],
                 'status' => 'pending',
+                'attachment_path' => $attachmentPath ? storage_path('app/public/' . $attachmentPath) : null,
+                'attachment_name' => $attachmentName,
             ]);
 
             // Get count of users who will receive this email
@@ -159,5 +172,54 @@ class EmailController extends Controller
             'dispatch' => $dispatch,
             'analytics' => $analytics,
         ]);
+    }
+
+    public function test(Request $request)
+    {
+        $validated = $request->validate([
+            'email' => 'required|email',
+            'subject' => 'required|string',
+            'message' => 'required|string',
+            'attachment' => 'nullable|file|max:10240',
+        ]);
+
+        try {
+            // Handle file upload if present
+            $attachmentPath = null;
+            $attachmentName = null;
+            
+            if ($request->hasFile('attachment')) {
+                $file = $request->file('attachment');
+                $attachmentName = $file->getClientOriginalName();
+                $attachmentPath = $file->store('email-attachments', 'public');
+            }
+
+            // Send test email
+            Mail::to($validated['email'])
+                ->send(new BroadcastMail(
+                    [
+                        'subject' => $validated['subject'],
+                        'message' => $validated['message'],
+                        'name' => 'Test User'
+                    ],
+                    $attachmentPath ? storage_path('app/public/' . $attachmentPath) : null,
+                    $attachmentName
+                ));
+
+            return back()->with([
+                'success' => 'Test email sent successfully'
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error('Failed to send test email', [
+                'error' => $e->getMessage(),
+                'data' => $validated
+            ]);
+
+            return response()->json(
+                ['error' => 'Failed to send test email: ' . $e->getMessage()],
+                500
+            );
+        }
     }
 } 
