@@ -106,7 +106,7 @@ class EmailController extends Controller
             if ($request->hasFile('banner_image')) {
                 $file = $request->file('banner_image');
                 $bannerImagePath = $file->store('banner_images', 'public');
-                $bannerImagePath = env('APP_URL') . Storage::url($bannerImagePath);
+                $bannerImagePath = env('APP_URL') .'/public'. Storage::url($bannerImagePath);
             }
             // Create the dispatch record
             $dispatch = EmailDispatch::create([
