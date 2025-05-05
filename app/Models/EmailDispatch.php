@@ -21,6 +21,7 @@ class EmailDispatch extends Model
         'error_log',
         'attachment_path',
         'attachment_name',
+        'banner_image',
     ];
 
     protected $casts = [

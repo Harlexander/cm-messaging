@@ -47,8 +47,8 @@ class SendBroadcastEmail implements ShouldQueue
                     [
                         'subject' => $this->dispatch->subject,
                         'message' => $this->dispatch->message,
-                        'name' => $this->name
-                        // 'bannerImage' => "https://cdn1.kingschat.online/uploads/media/5cb67c0e6eb1170001f207fd/S2M2OE9CWTkxVFRnTnZDT0lPS2ZSQT09/No_One_Forgotten_live.jpg"
+                        'name' => $this->name,
+                        'bannerImage' => $this->dispatch->banner_image
                     ],
                     $this->dispatch->attachment_path,
                     $this->dispatch->attachment_name

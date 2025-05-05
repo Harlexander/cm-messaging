@@ -85,6 +85,7 @@ class EmailController extends Controller
             'zone' => 'required|string',
             'country' => 'required|string',
             'attachment' => 'nullable|file|max:10240', // Max 10MB
+            'banner_image' => 'nullable|file|max:10240', // Max 10MB
         ]);
 
         try {
@@ -98,9 +99,15 @@ class EmailController extends Controller
                 $file = $request->file('attachment');
                 $attachmentName = $file->getClientOriginalName();
                 $storedPath = $file->store('email-attachments', 'public');
-                $attachmentPath = asset(Storage::url($storedPath)); // Store the full public URL
+                $attachmentPath = Storage::url($storedPath); // Store the full public URL with environment consideration
             }
 
+            $bannerImagePath = null;
+            if ($request->hasFile('banner_image')) {
+                $file = $request->file('banner_image');
+                $bannerImagePath = $file->store('banner_images', 'public');
+                $bannerImagePath = env('APP_URL') . Storage::url($bannerImagePath);
+            }
             // Create the dispatch record
             $dispatch = EmailDispatch::create([
                 'subject' => $validated['subject'],
@@ -113,6 +120,7 @@ class EmailController extends Controller
                 'status' => 'pending',
                 'attachment_path' => $attachmentPath,
                 'attachment_name' => $attachmentName,
+                'banner_image' => $bannerImagePath,
             ]);
 
             // Get count of users who will receive this email

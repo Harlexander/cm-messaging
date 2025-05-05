@@ -20,6 +20,7 @@ class BroadcastMail extends Mailable
      */
     public function __construct(
         public array $messageContent,
+        public ?string $bannerImage = null,
         public ?string $attachmentPath = null,
         public ?string $attachmentName = null
     ) {}

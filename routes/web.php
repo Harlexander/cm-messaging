@@ -53,7 +53,7 @@ Route::get('/test', function () {
             PARTICIPATION LINK-
             www.nooneforgotten.org',
         'name' => 'Test Name',
-        'bannerImage' => 'https://cdn1.kingschat.online/uploads/media/5cb67c0e6eb1170001f207fd/S2M2OE9CWTkxVFRnTnZDT0lPS2ZSQT09/No_One_Forgotten_live.jpg'
+        'bannerImage' => 'https://cdn1.kingschat.online/uploads/media/5d08b3bd2475aa0001121c37/SGZhd3A2N3dYNURkMlNiUnEvdkQrZz09/1000186526.jpg'
     ]);
 });
 

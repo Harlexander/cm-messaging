@@ -123,6 +123,12 @@
             <img src="https://cellministry.tv/pfcc/assets/logo.png" alt="Company Logo" class="logo">
         </div>
 
+        @if(isset($messageContent['bannerImage']))
+            <div>
+                <img src="{{ $messageContent['bannerImage'] }}" style="width: 100%; height: auto;" alt="">
+            </div>
+        @endif
+
         <div class="content">
             <div class="greeting">
                 Dear {{ $messageContent['name'] }},
@@ -132,11 +138,6 @@
                 {!! $messageContent['message'] !!}
             </div>
         </div>
-                @if(isset($messageContent['bannerImage']))
-            <div class="banner-container">
-                <img src="{{ $messageContent['bannerImage'] }}" alt="Banner" class="banner">
-            </div>
-        @endif
         
         <div class="footer">
             <!-- <div class="social-links">

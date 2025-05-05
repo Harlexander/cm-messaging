@@ -33,6 +33,7 @@ const formSchema = z.object({
     country: z.string().default("all"),
     attachment: z.any().optional(),
     test_email: z.string().optional(),
+    banner_image: z.any().optional(),
 }).refine(data => {
     // Ensure either title (for KingsChat) or subject (for email) is provided
     return data.title || data.subject;
@@ -65,6 +66,7 @@ export function MessageForm({ onSubmitSuccess, filters, type = 'kingschat' }: Me
             country: 'all',
             attachment: undefined,
             test_email: '',
+            banner_image: undefined,
         },
     });
 
@@ -83,6 +85,7 @@ export function MessageForm({ onSubmitSuccess, filters, type = 'kingschat' }: Me
                 zone: data.zone, 
                 country: data.country,
                 attachment: data.attachment,
+                banner_image: data.banner_image,
             }
             : { 
                 title: data.title, 
@@ -117,6 +120,7 @@ export function MessageForm({ onSubmitSuccess, filters, type = 'kingschat' }: Me
             subject: data.subject,
             message: data.message,
             attachment: data.attachment,
+            banner_image: data.banner_image,
         }, {
             onSuccess: () => {
                 toast.success('Test email sent successfully!');
@@ -288,6 +292,28 @@ export function MessageForm({ onSubmitSuccess, filters, type = 'kingschat' }: Me
                                                 }
                                             }}
                                             {...field}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
+                        <FormField
+                            control={form.control}
+                            name="banner_image"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Banner Image</FormLabel>
+                                    <FormControl>
+                                        <Input 
+                                            type="file"
+                                            onChange={(e) => {
+                                                const file = e.target.files?.[0];
+                                                if (file) {
+                                                    field.onChange(file);
+                                                }
+                                            }}
                                         />
                                     </FormControl>
                                     <FormMessage />
