@@ -49,7 +49,7 @@ class SendKingsChatBroadcast extends Command
                 ->where('status', 'pending')
                 ->count();
 
-            if ($queuedCount >= 100) {
+            if ($queuedCount >= 5) {
                 $this->info("Already have {$queuedCount} messages in queue. Waiting for them to process...");
                 DB::commit();
                 return Command::SUCCESS;
@@ -95,7 +95,7 @@ class SendKingsChatBroadcast extends Command
             }
 
             // Calculate how many more we can queue
-            $batchSize = min(100 - $queuedCount, $remainingUsers);
+            $batchSize = min(5 - $queuedCount, $remainingUsers);
             
             $this->info("Total remaining recipients: {$remainingUsers}");
             $this->info("Currently in queue: {$queuedCount}");
