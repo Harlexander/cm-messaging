@@ -47,7 +47,6 @@ class SendBroadcastEmail implements ShouldQueue
                 'title' => $this->dispatch->title,
                 'subject' => $this->dispatch->subject,
                 'message' => $this->dispatch->message,
-                'name' => $this->user->full_name,
                 'bannerImage' => $this->dispatch->banner_image,
                 'user' => $this->user
             ];

@@ -76,7 +76,6 @@ class BroadcastMail extends Mailable
             view: 'emails.broadcast',
             with: [
                 'message' => $this->messageContent['message'],
-                'name' => $this->messageContent['name'],
                 'bannerImage' => $this->bannerImage,
             ]
         );
