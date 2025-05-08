@@ -44,7 +44,7 @@ class BrevoWebhookController extends Controller
                     ]);
 
                     UserList::where('email', $email)->update([
-                        'email_active' => true
+                        'email_active' => 1
                     ]);
                     break;
 
