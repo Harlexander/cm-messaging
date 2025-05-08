@@ -19,20 +19,22 @@ return new class extends Migration
             $table->integer('referral_count')->default(0)->after('referral_code');
         });
 
-        // Copy data from prayer_conference_2_0 with explicit collation
+        // Copy data from prayer_conference_2_0
         DB::statement("
             UPDATE prayer_conference pc
-            INNER JOIN prayer_conference_2_0 pc2 ON pc2.email COLLATE utf8mb4_unicode_ci = pc.email
+            INNER JOIN prayer_conference_2_0 pc2 ON pc2.email = pc.email COLLATE latin1_swedish_ci
             SET 
-                pc.referral_code = COALESCE(NULLIF(pc2.referral_code COLLATE utf8mb4_unicode_ci, ''), 
-                    SUBSTRING(MD5(RAND()), 1, 8)),
+                pc.referral_code = COALESCE(
+                    NULLIF(pc2.referral_code, ''),
+                    SUBSTRING(MD5(RAND()), 1, 8)
+                ),
                 pc.referral_count = COALESCE(pc2.referral_count, 0)
         ");
 
         // Generate codes for users not in prayer_conference_2_0
         DB::statement("
             UPDATE prayer_conference pc
-            LEFT JOIN prayer_conference_2_0 pc2 ON pc2.email COLLATE utf8mb4_unicode_ci = pc.email
+            LEFT JOIN prayer_conference_2_0 pc2 ON pc2.email = pc.email COLLATE latin1_swedish_ci
             SET pc.referral_code = SUBSTRING(MD5(RAND()), 1, 8)
             WHERE pc2.email IS NULL OR pc.referral_code IS NULL
         ");
