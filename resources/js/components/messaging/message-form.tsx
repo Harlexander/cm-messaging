@@ -129,6 +129,7 @@ export function MessageForm({ onSubmitSuccess, filters, type = 'kingschat' }: Me
             message: data.message,
             attachment: data.attachment,
             banner_image: data.banner_image,
+            title: data.title,
         }, {
             onSuccess: () => {
                 toast.success('Test email sent successfully!');

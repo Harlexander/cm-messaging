@@ -6,26 +6,41 @@
     <title>Email Notification</title>
     <style>
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            line-height: 1.6;
-            color: #1a1a1a;
             margin: 0;
-            padding: 20px;
+            padding: 0;
             background-color: #f4f4f5;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+        table {
+            border-spacing: 0;
+            border-collapse: collapse;
+            mso-table-lspace: 0pt;
+            mso-table-rspace: 0pt;
+        }
+        td {
+            padding: 0;
+        }
+        img {
+            border: 0;
+            height: auto;
+            line-height: 100%;
+            outline: none;
+            text-decoration: none;
+            -ms-interpolation-mode: bicubic;
         }
         .wrapper {
-            max-width: 500px;
-            margin: 0 auto;
             width: 100%;
+            table-layout: fixed;
+            background-color: #f4f4f5;
+            padding: 20px 0;
         }
         .container {
-            background: #ffffff;
-            padding: 0;
+            max-width: 500px;
+            background-color: #ffffff;
+            margin: 0 auto;
             border-radius: 16px;
             overflow: hidden;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-            width: 100%;
-            margin: 0 auto;
         }
         .header {
             padding: 32px;
@@ -35,42 +50,16 @@
         }
         .logo {
             max-width: 120px;
-            height: auto;
-            display: inline-block;
-        }
-        .banner {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-        .banner-container {
-            background-color: #f8fafc;
-            max-height: none;
-            line-height: 0;
         }
         .content {
             padding: 32px;
             color: #374151;
-        }
-        .greeting {
-            font-size: 16px;
-            color: black;
-            margin-bottom: 16px;
+            line-height: 1.7;
         }
         .message {
             font-size: 15px;
-            line-height: 1.7;
             color: #1f2937;
-            white-space: pre-line;
             text-align: left;
-            margin: 0;
-            padding: 0;
-        }
-        .message p {
-            margin: 0 0 16px 0;
-        }
-        .message p:last-child {
-            margin-bottom: 0;
         }
         .footer {
             background-color: #f8fafc;
@@ -79,75 +68,66 @@
             color: #6b7280;
             border-top: 1px solid #e5e7eb;
         }
-        .social-links {
-            margin: 16px 0;
-        }
-        .social-links a {
-            color: #4b5563;
-            text-decoration: none;
-            margin-right: 16px;
-            font-weight: 500;
-        }
-        .social-links a:hover {
-            color: #2563eb;
-        }
-        .btn {
-            display: inline-block;
-            background-color: #2563eb;
-            color: white;
-            padding: 12px 24px;
-            border-radius: 6px;
-            margin-top: 24px;
-            font-weight: 500;
-            text-decoration: none;
-            font-size: 14px;
-        }
-        .btn:hover {
-            background-color: #1d4ed8;
-        }
         .copyright {
-            margin-top: 16px;
             font-size: 12px;
             color: #9ca3af;
         }
-        @media (max-width: 600px) {
-            body {
-                padding: 12px;
-            }
+        @media screen and (max-width: 600px) {
             .container {
-                border-radius: 12px;
+                width: 100% !important;
+                max-width: 100% !important;
             }
-            .header, .content, .footer {
-                padding: 24px;
+            .content, .header, .footer {
+                padding: 24px !important;
             }
         }
     </style>
 </head>
 <body>
-    <div class="wrapper">
-        <div class="container">
-            <div class="header">
-                <img src="https://cellministry.tv/pfcc/assets/logo.png" alt="Company Logo" class="logo">
-            </div>
-
-            @if(isset($messageContent['bannerImage']))
-                <div>
-                    <img src="{{ $messageContent['bannerImage'] }}" style="width: 100%; height: auto;" alt="">
-                </div>
-            @endif
-
-            <div class="content">
-                <div class="message">
-                    {!! $messageContent['message'] !!}
-                </div>
-            </div>
-            
-            <div class="footer">
-                <div class="copyright">
-                    &copy; {{ date('Y') }} Love World Cell Ministry. All rights reserved.
-                </div>
-            </div>
-        </div>
-    </div>
+    <table class="wrapper" width="100%" cellpadding="0" cellspacing="0" role="presentation">
+        <tr>
+            <td align="center">
+                <table class="container" width="500" cellpadding="0" cellspacing="0" role="presentation">
+                    <tr>
+                        <td class="header">
+                            <img src="https://cellministry.tv/pfcc/assets/logo.png" alt="Company Logo" class="logo">
+                        </td>
+                    </tr>
+                    
+                    @if(isset($messageContent['bannerImage']))
+                    <tr>
+                        <td>
+                            <img src="{{ $messageContent['bannerImage'] }}" width="500" style="width: 100%;" alt="">
+                        </td>
+                    </tr>
+                    @endif
+                    
+                    <tr>
+                        <td class="content">
+                            <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
+                                <tr>
+                                    <td class="message">
+                                        {!! $messageContent['message'] !!}
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="footer">
+                            <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
+                                <tr>
+                                    <td class="copyright" align="center">
+                                        &copy; {{ date('Y') }} Love World Cell Ministry. All rights reserved.
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
 </body>
 </html> 

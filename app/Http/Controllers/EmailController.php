@@ -193,6 +193,7 @@ class EmailController extends Controller
             'subject' => 'required|string',
             'message' => 'required|string',
             'attachment' => 'nullable|file|max:10240',
+            'title' => 'nullable|string',
         ]);
 
         try {
@@ -213,7 +214,7 @@ class EmailController extends Controller
                     [
                         'subject' => $validated['subject'],
                         'message' => $validated['message'],
-                        'name' => 'Test User'
+                        'title' => $validated['title'],
                     ],
                     $attachmentPath,
                     $attachmentName
