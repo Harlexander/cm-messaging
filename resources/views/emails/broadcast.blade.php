@@ -9,10 +9,14 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             line-height: 1.6;
             color: #1a1a1a;
-            max-width: 600px;
-            margin: 0 auto;
+            margin: 0;
             padding: 20px;
             background-color: #f4f4f5;
+        }
+        .wrapper {
+            max-width: 500px;
+            margin: 0 auto;
+            width: 100%;
         }
         .container {
             background: #ffffff;
@@ -20,6 +24,8 @@
             border-radius: 16px;
             overflow: hidden;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            width: 100%;
+            margin: 0 auto;
         }
         .header {
             padding: 32px;
@@ -118,26 +124,28 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <img src="https://cellministry.tv/pfcc/assets/logo.png" alt="Company Logo" class="logo">
-        </div>
-
-        @if(isset($messageContent['bannerImage']))
-            <div>
-                <img src="{{ $messageContent['bannerImage'] }}" style="width: 100%; height: auto;" alt="">
+    <div class="wrapper">
+        <div class="container">
+            <div class="header">
+                <img src="https://cellministry.tv/pfcc/assets/logo.png" alt="Company Logo" class="logo">
             </div>
-        @endif
 
-        <div class="content">
-            <div class="message">
-                {!! $messageContent['message'] !!}
+            @if(isset($messageContent['bannerImage']))
+                <div>
+                    <img src="{{ $messageContent['bannerImage'] }}" style="width: 100%; height: auto;" alt="">
+                </div>
+            @endif
+
+            <div class="content">
+                <div class="message">
+                    {!! $messageContent['message'] !!}
+                </div>
             </div>
-        </div>
-        
-        <div class="footer">
-            <div class="copyright">
-                &copy; {{ date('Y') }} Love World Cell Ministry. All rights reserved.
+            
+            <div class="footer">
+                <div class="copyright">
+                    &copy; {{ date('Y') }} Love World Cell Ministry. All rights reserved.
+                </div>
             </div>
         </div>
     </div>
