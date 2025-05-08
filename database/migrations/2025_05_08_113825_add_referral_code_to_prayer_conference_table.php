@@ -19,24 +19,30 @@ return new class extends Migration
             $table->integer('referral_count')->default(0)->after('referral_code');
         });
 
-        // Copy data from prayer_conference_2_0
+        // First update with just the referral count
         DB::statement("
             UPDATE prayer_conference pc
             INNER JOIN prayer_conference_2_0 pc2 ON pc2.email = pc.email COLLATE latin1_swedish_ci
-            SET 
-                pc.referral_code = COALESCE(
-                    NULLIF(pc2.referral_code, ''),
-                    SUBSTRING(MD5(RAND()), 1, 8)
-                ),
-                pc.referral_count = COALESCE(pc2.referral_count, 0)
+            SET pc.referral_count = COALESCE(pc2.referral_count, 0)
         ");
 
-        // Generate codes for users not in prayer_conference_2_0
+        // Then update referral codes from existing users
+        DB::statement("
+            UPDATE prayer_conference pc
+            INNER JOIN prayer_conference_2_0 pc2 ON pc2.email = pc.email COLLATE latin1_swedish_ci
+            SET pc.referral_code = pc2.referral_code COLLATE latin1_swedish_ci
+            WHERE pc2.referral_code IS NOT NULL AND pc2.referral_code != ''
+        ");
+
+        // Generate codes for users not in prayer_conference_2_0 or without codes
         DB::statement("
             UPDATE prayer_conference pc
             LEFT JOIN prayer_conference_2_0 pc2 ON pc2.email = pc.email COLLATE latin1_swedish_ci
             SET pc.referral_code = SUBSTRING(MD5(RAND()), 1, 8)
-            WHERE pc2.email IS NULL OR pc.referral_code IS NULL
+            WHERE pc2.email IS NULL 
+            OR pc2.referral_code IS NULL 
+            OR pc2.referral_code = ''
+            OR pc.referral_code IS NULL
         ");
 
         // Make sure no nulls remain
