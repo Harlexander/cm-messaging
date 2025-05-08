@@ -5,7 +5,7 @@ namespace App\Jobs;
 use App\Mail\BroadcastMail;
 use App\Models\EmailDispatch;
 use App\Models\EmailDispatchRecipient;
-use App\Models\User;
+use App\Models\UserList;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -28,7 +28,7 @@ class SendBroadcastEmail implements ShouldQueue
     public function __construct(
         protected EmailDispatch $dispatch,
         protected EmailDispatchRecipient $recipient,
-        protected User $user
+        protected UserList $user
     ) {}
 
     /**
