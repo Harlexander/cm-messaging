@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\EmailDispatchRecipient;
+use App\Models\UserList;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -40,6 +41,10 @@ class BrevoWebhookController extends Controller
                         'message_id' => $messageId,
                         'status' => 'delivered',
                         'delivered_at' => $timestamp
+                    ]);
+
+                    UserList::where('email', $email)->update([
+                        'email_active' => true
                     ]);
                     break;
 

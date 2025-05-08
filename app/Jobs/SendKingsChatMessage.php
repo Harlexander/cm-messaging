@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Models\KingschatDispatch;
 use App\Models\KingschatDispatchRecipient;
+use App\Models\UserList;
 use App\Services\KingsChatService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -24,8 +25,28 @@ class SendKingsChatMessage implements ShouldQueue
      */
     public function __construct(
         protected KingschatDispatch $dispatch,
-        protected KingschatDispatchRecipient $recipient
+        protected KingschatDispatchRecipient $recipient,
+        protected UserList $user
     ) {}
+
+
+    protected function processDynamicContent(string $content, UserList $user): string
+    {
+        if (!isset($user) || !is_object($user)) {
+            return $content;
+        }
+
+        return preg_replace_callback('/{{([^}]+)}}/', function ($matches) use ($user) {
+            $key = trim($matches[1]);
+            
+            // Only process if it's a user attribute
+            if (isset($user->{$key})) {
+                return $user->{$key};
+            }            
+            
+            return $matches[0];
+        }, $content);
+    }
 
     /**
      * Execute the job.
@@ -39,7 +60,7 @@ class SendKingsChatMessage implements ShouldQueue
 
         $result = $kingsChatService->sendMessage(
             $this->recipient->kc_user_id,
-            $this->dispatch->message
+            $this->processDynamicContent($this->dispatch->message, $this->user)
         );
 
         if ($result['success']) {

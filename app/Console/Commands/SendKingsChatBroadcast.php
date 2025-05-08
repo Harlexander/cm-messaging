@@ -8,7 +8,6 @@ use App\Models\KingschatDispatchRecipient;
 use App\Models\UserList;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 class SendKingsChatBroadcast extends Command
 {
@@ -126,7 +125,7 @@ class SendKingsChatBroadcast extends Command
                     ]);
 
                     // Queue the message
-                    SendKingsChatMessage::dispatch($dispatch, $recipient)
+                    SendKingsChatMessage::dispatch($dispatch, $recipient, $user)
                         ->onQueue('kingschat');
 
                     $bar->advance();

@@ -17,6 +17,7 @@ class UserList extends Model
         'kc_user_id',
         'phone_number',
         'email',
+        'email_active',
         'designation',
         'zone',
         'country',

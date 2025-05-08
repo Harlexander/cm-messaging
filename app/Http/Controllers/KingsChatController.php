@@ -25,48 +25,17 @@ class KingsChatController extends Controller
         $total_read = KingschatDispatchRecipient::where('read_at', '!=', null)->count();
         $average_read_rate = $total_delivered > 0 ? $total_read / $total_delivered * 100 : 0;
 
+        $filters = [
+            'designations' => UserList::distinct('designation')->pluck('designation'),
+            'zones' => UserList::distinct('zone')->pluck('zone'),
+            'countries' => UserList::distinct('country')->pluck('country'),
+        ];
+
         $analytics = [
             'total_messages' => count($messages),
             'total_delivered' => $total_delivered,
             'total_read' => $total_read,
             'average_read_rate' => $average_read_rate,
-        ];
-
-        // Filter options based on the sample data
-        $filters = [
-            'designations' => [
-                'Cell Leader',
-                'Church Pastor',
-                'Senior Cell Leader',
-                'PCF Leader',
-                'Zonal Secretary',
-                'Bible Study Class Teacher',
-                'Outreach Coordinator',
-            ],
-            'zones' => [
-                'CE LAGOS SUBZONE C',
-                'CE SOUTH EAST ASIA',
-                'CE EWCA ZONE 4',
-                'CE SA ZONE 3',
-                'CE SOUTH WEST ZONE 3',
-                'CE SOUTH EAST ZONE 3',
-                'CAMPUS MINISTRY',
-                'CE QUEBEC ZONE',
-                'CE SOUTH WEST ZONE 4',
-                'CE USA 1 ZONE 1',
-                'CE MINISTRY CENTER ABUJA',
-                'CE SA ZONE 5',
-            ],
-            'countries' => [
-                'Nigeria',
-                'Philippines',
-                'Gabon',
-                'Botswana',
-                'United Kingdom',
-                'Canada',
-                'United States',
-                'Zimbabwe',
-            ],
         ];
 
         return Inertia::render('Messaging/KingsMessage', [
