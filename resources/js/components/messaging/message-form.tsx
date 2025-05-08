@@ -23,6 +23,13 @@ import {
 import { Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 import TextEditor, { TextEditor2 } from './text-editor';
+import { Info } from 'lucide-react';
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const formSchema = z.object({
     title: z.string().optional(),
@@ -79,6 +86,7 @@ export function MessageForm({ onSubmitSuccess, filters, type = 'kingschat' }: Me
 
         const payload = type === 'email' 
             ? { 
+                title: data.title,
                 subject: data.subject, 
                 message: data.message, 
                 designation: data.designation, 
@@ -226,13 +234,13 @@ export function MessageForm({ onSubmitSuccess, filters, type = 'kingschat' }: Me
 
                 <FormField
                     control={form.control}
-                    name={type === 'email' ? 'subject' : 'title'}
+                    name={'title'}
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>{type === 'email' ? 'Subject' : 'Title'}</FormLabel>
+                            <FormLabel>{'Title'}</FormLabel>
                             <FormControl>
                                 <Input
-                                    placeholder={type === 'email' ? "Enter email subject" : "Enter message title"}
+                                    placeholder={type === 'email' ? "Sender title e.g Cell Ministry, One billion outreaches" : "Enter message title"}
                                     {...field}
                                 />
                             </FormControl>
@@ -240,8 +248,27 @@ export function MessageForm({ onSubmitSuccess, filters, type = 'kingschat' }: Me
                         </FormItem>
                     )}
                 />
-                
 
+                {
+                    type === 'email' && (
+                        <FormField
+                            control={form.control}
+                            name={'subject'}
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>{'Subject'}</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            placeholder={'Enter email subject'}
+                                            {...field}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    )
+                }
                 
                 {
                     type == 'email' ? (
@@ -257,6 +284,28 @@ export function MessageForm({ onSubmitSuccess, filters, type = 'kingschat' }: Me
                 {type === 'email' && (
                     <>
                         <div className="space-y-4">
+                            <div className="flex items-center gap-2">
+                                <FormLabel>Available User Fields</FormLabel>
+                                <TooltipProvider>
+                                    <Tooltip>
+                                        <TooltipTrigger>
+                                            <Info className="h-4 w-4 text-muted-foreground" />
+                                        </TooltipTrigger>
+                                        <TooltipContent>
+                                            <p>Use these placeholders in your message:</p>
+                                            <ul className="list-disc list-inside mt-2">
+                                                <li>{"{{ user.full_name }}"}</li>
+                                                <li>{"{{ user.email }}"}</li>
+                                                <li>{"{{ user.phone }}"}</li>
+                                                <li>{"{{ user.designation }}"}</li>
+                                                <li>{"{{ user.zone }}"}</li>
+                                                <li>{"{{ user.country }}"}</li>
+                                            </ul>
+                                        </TooltipContent>
+                                    </Tooltip>
+                                </TooltipProvider>
+                            </div>
+
                             <FormField
                                 control={form.control}
                                 name="test_email"

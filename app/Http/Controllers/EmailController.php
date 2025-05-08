@@ -79,6 +79,7 @@ class EmailController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
+            'title' => 'nullable',
             'subject' => 'required|string|max:255',
             'message' => 'required|string',
             'designation' => 'required|string',
@@ -110,6 +111,7 @@ class EmailController extends Controller
             }
             // Create the dispatch record
             $dispatch = EmailDispatch::create([
+                'title' =>$validated['title'],
                 'subject' => $validated['subject'],
                 'message' => $validated['message'],
                 'filters' => [

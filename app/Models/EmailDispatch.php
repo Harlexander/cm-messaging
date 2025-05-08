@@ -12,6 +12,7 @@ class EmailDispatch extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
+        'title',
         'subject',
         'message',
         'filters',

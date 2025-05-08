@@ -5,6 +5,7 @@ namespace App\Jobs;
 use App\Mail\BroadcastMail;
 use App\Models\EmailDispatch;
 use App\Models\EmailDispatchRecipient;
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -27,7 +28,7 @@ class SendBroadcastEmail implements ShouldQueue
     public function __construct(
         protected EmailDispatch $dispatch,
         protected EmailDispatchRecipient $recipient,
-        protected string $name
+        protected User $user
     ) {}
 
     /**
@@ -41,15 +42,20 @@ class SendBroadcastEmail implements ShouldQueue
         }
 
         try {
+            // Get all recipient data
+            $recipientData = [
+                'title' => $this->dispatch->title,
+                'subject' => $this->dispatch->subject,
+                'message' => $this->dispatch->message,
+                'name' => $this->user->full_name,
+                'bannerImage' => $this->dispatch->banner_image,
+                'user' => $this->user
+            ];
+
             // Send the email
             Mail::to($this->recipient->email)
                 ->send(new BroadcastMail(
-                    [
-                        'subject' => $this->dispatch->subject,
-                        'message' => $this->dispatch->message,
-                        'name' => $this->name,
-                        'bannerImage' => $this->dispatch->banner_image
-                    ],
+                    $recipientData,
                     $this->dispatch->attachment_path,
                     $this->dispatch->attachment_name
                 ));

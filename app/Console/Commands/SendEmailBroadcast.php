@@ -121,7 +121,7 @@ class SendEmailBroadcast extends Command
                     ]);
                     
                     // Queue the email
-                    SendBroadcastEmail::dispatch($dispatch, $recipient, $user->full_name)
+                    SendBroadcastEmail::dispatch($dispatch, $recipient, $user)
                         ->onQueue('emails');
 
                     // $bar->advance();

@@ -61,23 +61,23 @@ export default function TextEditor({ setMessage }: { setMessage: (message: strin
 export function TextEditor2({ setMessage }: { setMessage: (message: string) => void }) {  
   return (
     <Editor
-    apiKey='2hd427bmouiv0fr6vqp0mv0h3eknee13ln0oq9444gyoljp6'
-    onChange={(_evt, editor) => setMessage(editor.getContent())}
-    initialValue="<p>This is the initial content of the editor.</p>"
-    init={{
-      height: 500,
-      menubar: false,
-      plugins: [
-        'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
-        'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
-        'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount'
-      ],
-      toolbar: 'undo redo | blocks | ' +
-        'bold italic forecolor | alignleft aligncenter ' +
-        'alignright alignjustify | bullist numlist outdent indent | ' +
-        'removeformat | help',
-      content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
-    }}
-  />
+      apiKey='2hd427bmouiv0fr6vqp0mv0h3eknee13ln0oq9444gyoljp6'
+      onChange={(_evt, editor) => setMessage(editor.getContent())}
+      initialValue="<p>This is the initial content of the editor.</p>"
+      init={{
+        height: 500,
+        menubar: false,
+        plugins: [
+          'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+          'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+          'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount'
+        ],
+        toolbar: 'undo redo | blocks | ' +
+          'bold italic forecolor | alignleft aligncenter ' +
+          'alignright alignjustify | bullist numlist outdent indent | ' +
+          'removeformat | help',
+        content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+      }}
+    />
   )
 }

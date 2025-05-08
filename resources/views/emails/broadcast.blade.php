@@ -130,23 +130,12 @@
         @endif
 
         <div class="content">
-            <div class="greeting">
-                Dear {{ $messageContent['name'] }},
-            </div>
-            
             <div class="message">
                 {!! $messageContent['message'] !!}
             </div>
         </div>
         
         <div class="footer">
-            <!-- <div class="social-links">
-                <a href="https://www.facebook.com/share/19rVXhK1Zu/">Facebook</a>
-                <a href="https://x.com/cellseverywhere?t=mcwZw3-RhChyDuim-3OIug&s=09">X</a>
-                <a href="https://www.instagram.com/p/DGzxv1KNfcY/?igsh=em9iOHg5b2xkcWk=">Instagram</a>
-                <a href="https://vm.tiktok.com/ZMBe751SN/">TikTok</a>
-            </div> -->
-            
             <div class="copyright">
                 &copy; {{ date('Y') }} Love World Cell Ministry. All rights reserved.
             </div>

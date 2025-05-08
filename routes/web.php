@@ -2,15 +2,14 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KingsChatController;
-use App\Http\Controllers\MessagingController;
 use App\Http\Controllers\EmailController;
 use App\Http\Controllers\UsersController;
 use App\Mail\BroadcastMail;
 use App\Models\EmailDispatchRecipient;
-use App\Models\KcHandle;
-use Illuminate\Support\Facades\Mail;
+use App\Models\User;
+use App\Models\UserList;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
+
 
 Route::get('/', function () {
     return redirect()->route('dashboard');
@@ -39,22 +38,31 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::get('/test', function () {
-    return new BroadcastMail([
-        'subject' => 'Test Subject',
-        'message' => '1 DAY TO GO📢📢
-            NO ONE FORGOTTEN LIVE!!
-            - COMPLETING THE FULL PREACHING OF THE GOSPEL IN THE PRISONS
+    $user = UserList::find(1);
+    
+    return new BroadcastMail(
+        messageContent: [
+            'title' => "Alexander",
+            'subject' => 'Test Subject',
+            'message' => '
+            Hello {{full_name}}
 
-            🗓️ TUESDAY, MARCH, 11TH
-            🕙 10AM GMT+1
+            1 DAY TO GO📢📢
+                NO ONE FORGOTTEN LIVE!!
+                - COMPLETING THE FULL PREACHING OF THE GOSPEL IN THE PRISONS
 
-            REGISTRATION LINK: https://www.kingsforms.online/prison-ministry-conference
+                🗓️ TUESDAY, MARCH, 11TH
+                🕙 10AM GMT+1
 
-            PARTICIPATION LINK-
-            www.nooneforgotten.org',
-        'name' => 'Test Name',
-        'bannerImage' => 'https://cdn1.kingschat.online/uploads/media/5d08b3bd2475aa0001121c37/SGZhd3A2N3dYNURkMlNiUnEvdkQrZz09/1000186526.jpg'
-    ]);
+                REGISTRATION LINK: https://www.kingsforms.online/prison-ministry-conference
+
+                PARTICIPATION LINK-
+                www.nooneforgotten.org',
+            'name' => 'Test Name',
+            'user' => $user
+        ],
+        bannerImage: 'https://cdn1.kingschat.online/uploads/media/5d08b3bd2475aa0001121c37/SGZhd3A2N3dYNURkMlNiUnEvdkQrZz09/1000186526.jpg'
+    );
 });
 
 Route::get('/test2', function () {
