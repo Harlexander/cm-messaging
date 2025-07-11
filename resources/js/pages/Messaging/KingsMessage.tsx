@@ -30,6 +30,7 @@ interface Message {
 }
 
 interface Props {
+    clientId: string;
     messages: Message[];
     analytics: {
         total_messages: number;
@@ -44,7 +45,7 @@ interface Props {
     };
 }
 
-export default function KingsMessage({ messages, analytics, filters }: Props) {
+export default function KingsMessage({ messages, analytics, filters, clientId }: Props) {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [loginData, setLoginData] = useState<authenticationTokenResponseI | null>(null);
 
@@ -56,7 +57,7 @@ export default function KingsMessage({ messages, analytics, filters }: Props) {
                 return;
             }
             const result = await kingsChatWebSdk.login({
-                clientId: "3d6ff64c-7b41-4b8d-a92c-bb51df27222e",
+                clientId: clientId,
                 scopes: ['send_chat_message'],
             });
 
